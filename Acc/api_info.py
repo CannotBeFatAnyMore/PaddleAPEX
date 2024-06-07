@@ -13,8 +13,11 @@
 # limitations under the License.
 
 import paddle
+# from paddlenlp.transformers.llama.modeling import LlamaRotaryEmbedding, LlamaLinearScalingRotaryEmbedding, LlamaNTKScalingRotaryEmbedding, LlamaDynamicNTKScalingRotaryEmbedding 
 import numpy as np
 from .Dump import dump_util
+
+# EMBEDDINGS = (LlamaRotaryEmbedding, LlamaLinearScalingRotaryEmbedding, LlamaNTKScalingRotaryEmbedding, LlamaDynamicNTKScalingRotaryEmbedding)
 
 Paddle_Type_Map = {
     "FP64": "paddle.float64",
@@ -85,6 +88,7 @@ class API:
         self.kwargs = ""
         self.mode = mode
         self.args_num = 0
+        self.embedding_num = 0
 
     """
         Adjust data format.
@@ -100,7 +104,7 @@ class API:
         dump_util.update_api_dict(self.api_info_struct, self.rank)
 
     def update_APIInfo(self, op_name, rank):
-        print("dump api: ", op_name)
+        # print("dump api: ", op_name)
         self.op_name = op_name
         self.rank = rank
 
@@ -132,6 +136,18 @@ class API:
 
         if isinstance(element, paddle.Tensor):
             return self._analyze_tensor(element)
+
+        if isinstance(element, object):
+            single_arg = {"type": type(element).__name__}
+            return single_arg
+
+        # if "Embedding" in type(element).__name__:
+        #     # self.embedding_num += 1
+        #     # obj_file_name = self.op_name + "." + str(self.embedding_num) + "*Embedding"
+        #     # obj_real_path = dump_util.dump_Embedding_obj(element, obj_file_name, self.rank)
+        #     single_arg = {"type": type(element).__name__}
+
+        #     return single_arg
 
         if element is None or isinstance(element, (bool, int, float, str, slice)):
             return self._analyze_builtin(element)

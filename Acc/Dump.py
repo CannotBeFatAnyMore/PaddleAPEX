@@ -77,6 +77,27 @@ class Dump:
 
         return full_path
 
+    # def dump_Embedding_obj(self, obj, dump_path, rank):
+        # self.rank = rank
+        # if self.rank is not None:
+        #     directory = os.path.join(
+        #         self.data_route, f"rank{self.rank}_step{cfg.global_step}"
+        #     )
+        # else:
+        #     directory = self.data_route
+        # create_directory(directory)
+        # file_path = os.path.join(directory, f"{dump_path}.obj")
+        # full_path = os.path.realpath(file_path)
+        # if self.Async_save:
+        #     remote_repo = os.path.join(
+        #         cfg.remote_path, f"rank{rank}_step{cfg.global_step}"
+        #     )
+        #     create_directory(remote_repo)
+        #     self.pool.safe_parellel_save(tensor, file_path, remote_repo)
+        # else:
+        #     save_tensor(tensor, file_path)
+        # return full_path
+
     """
         Get Api_info dict, update self.dump_api_dict
     """

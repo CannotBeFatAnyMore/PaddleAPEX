@@ -18,6 +18,13 @@ from .. import config
 
 cfg = config.cfg
 
+def get_custom_op(yaml_path):
+    with open(yaml_path, "r") as f:
+        Ops = yaml.safe_load(f)
+        WrapCustomOps = Ops.get("custom")
+        f.close()
+    return WrapCustomOps
+
 class GetTargetOP:
     def __init__(self, yaml_path):
         with open(yaml_path, "r") as f:
