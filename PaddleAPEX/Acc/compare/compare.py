@@ -22,8 +22,6 @@ seed_all()
 PRECISION = 14
 
 
-PRECISION = 14
-
 class Comparator:
     # consts for result csv
     COLUMN_API_NAME = "API name"
