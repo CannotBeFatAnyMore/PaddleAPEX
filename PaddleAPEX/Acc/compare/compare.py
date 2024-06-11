@@ -19,6 +19,8 @@ from compare.compare_dependency import FileOpen
 from compare.compare_dependency import seed_all
 
 seed_all()
+PRECISION = 14
+
 
 PRECISION = 14
 

@@ -1,4 +1,6 @@
-custom:
+# custom op in different package should not have same names!
+
+paddlenlp.transformers.llama.fusion_ops:
   -  fused_rotary_position_embedding
   -  fusion_flash_attention
   -  fusion_rms_norm
