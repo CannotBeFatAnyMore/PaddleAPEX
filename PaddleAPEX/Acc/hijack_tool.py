@@ -12,14 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import paddle
-from .utils.get_target_op import GetTargetOP, get_custom_op
+from .utils.get_target_op import GetTargetOP, get_custom_setting
 from . import config
 from .wrap_Tensor_op import TensorOPTemplate, HookTensorOp
 from .wrap_functional_op import FunctionalOPTemplate, HookFunctionalOp
 from .wrap_paddle_op import PaddleOPTemplate, HookPaddleOp
 from .wrap_custom_op import CustomOPTemplate, HookCustomOp
-import sys
-import os
+import time
 import importlib
 import importlib.util
 cfg = config.cfg
@@ -61,15 +60,10 @@ def wrapped_op(api_type, op_name):
         print("In func wrapped_op:", api_type, " is not a vlid api type!")
         return None
 
-def hijack_custom_api(target_op):
-    hijack_file = cfg.cutom_op_file_path
-    custom_abs_pth = os.path.abspath(hijack_file)
-    custom_abs_dir = os.path.dirname(custom_abs_pth)
-    sys.path.append(custom_abs_dir)
-    module_name = custom_abs_pth.split("/")[-1][:-3]
-    check_module(module_name)
-    CUSTOM_MODULE = importlib.import_module(module_name)
+def hijack_custom_api(module, target_op):
+    CUSTOM_MODULE = importlib.import_module(module)
     print(dir(CUSTOM_MODULE))
+    time.sleep(2)
     for op_name in target_op:
         setattr(HookCustomOp, "wrap_" + op_name, getattr(CUSTOM_MODULE, str(op_name)))
     for attr_name in dir(HookCustomOp):
@@ -115,5 +109,6 @@ def hijack_target_api():
     hijack_functional_api(op.get_target_ops("functional"))
     hijack_paddle_api(op.get_target_ops("paddle"))
     if cfg.custom_op:
-        custom_op = get_custom_op(cfg.custom_op_path)
-    hijack_custom_api(custom_op)
+        custom_dict = get_custom_setting(cfg.custom_op_path)
+        for (module, ops) in custom_dict:
+            hijack_custom_api(module, ops)

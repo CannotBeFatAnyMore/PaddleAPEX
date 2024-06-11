@@ -17,7 +17,7 @@ import yaml
 
 class Config:
     def __init__(self) -> None:
-        # Load environment variable, if user not set, tool load from predefined default setting.
+        # Load environment variable, if user did not set, tool load from predefined default setting.
         config_path = os.environ.get('APEX_CONFIG_PATH','./PaddleAPEX/Acc/configs/tool_config.yaml')#
         with open(config_path, "r", encoding="utf-8") as f:
             configs = yaml.load(f, Loader=yaml.FullLoader)
@@ -28,7 +28,6 @@ class Config:
             self.target_step = configs["target_step"]
             self.remote_path = configs['remote_path']
             self.Async_dump = configs['Async_dump']
-            self.cutom_op_file_path = configs['cutom_op_file_path']
             self.custom_op = configs['custom_op']
             if configs["white_list"]!= "None":
                 self.white_list = configs["white_list"]
