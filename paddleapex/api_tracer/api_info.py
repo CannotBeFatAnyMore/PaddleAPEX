@@ -106,6 +106,10 @@ class API:
                 dump_util.update_api_dict(self.api_info_struct, self.rank)
 
     def analyze_element(self, element):
+        if isinstance(element, paddle.distributed.communication.group.Group):
+            group_list = element.ranks
+            return {"Group": group_list}
+
         if isinstance(element, (list, tuple)):
             out = []
             for item in element:

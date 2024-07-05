@@ -24,6 +24,7 @@ class GetTargetOP:
         with open(yaml_path, "r") as f:
             Ops = yaml.safe_load(f)
             self.target_op = Ops.get("target_op")
+            self.comm_op = Ops.get("comm_op")
             self.ignored_op = Ops.get("ignored_op")
             f.close()
             if self.ignored_op is None:
@@ -46,3 +47,20 @@ class GetTargetOP:
         self.api_to_catch = set(self.target_op) - set(self.ignored_op)
         self.check_api_stack()
         return self.api_to_catch
+
+    def get_comm_ops(self):
+        self.api_to_catch = set(self.comm_op) - set(self.ignored_op)
+        self.comm_op = []
+        for api in self.api_to_catch:
+            try:
+                pack = api.split(".")[0]
+                package_name, module = try_import(pack)
+                globals()[package_name] = module
+                func = eval(api)
+                if not func:
+                    print(f"{api} is not available!")
+                else:
+                    self.comm_op.append(api)
+            except Exception as err:
+                print(f"For api: {api}   ", str(err))
+        return self.comm_op

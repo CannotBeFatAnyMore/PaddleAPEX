@@ -257,6 +257,14 @@ def arg_parser(parser):
         help="",
         required=False,
     )
+    parser.add_argument(
+        "-pro",
+        "--profile",
+        dest="profile",
+        default=True,
+        type=bool,
+        help="Apex Profiling Mode",
+    )
 
 
 if __name__ == "__main__":
