@@ -30,7 +30,7 @@ def wrapped_op(op_name):
 
 def hijack_api():
     op = GetTargetOP(cfg.op_target_pth)
-    target_op = op.get_target_ops()
+    target_op = op.get_target_ops()        
     for op_name in target_op:
         parent_package, method_name = op_name.rsplit(".", maxsplit=1)
         try:

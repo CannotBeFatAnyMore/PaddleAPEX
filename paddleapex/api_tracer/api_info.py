@@ -14,7 +14,9 @@
 
 import paddle
 import numpy as np
+import paddle._C_ops
 from paddleapex.api_tracer.Dump import dump_util
+from paddleapex.api_tracer.config import cfg
 
 Paddle_Type_Map = {
     "FP64": "paddle.float64",
@@ -70,7 +72,10 @@ class API:
         self.embedding_num = 0
         self.output_num = 0
         self.dout_list = []
-
+        if cfg.profile_mode:
+            self.tensor_analyzer_ = self.effi_analyze_tensor
+        else:
+            self.tensor_analyzer_ = self._analyze_tensor
     """
         Adjust data format.
         Transfer opinfo_dict to dump utils
@@ -84,7 +89,7 @@ class API:
         }
 
     def update_APIInfo(self, op_name, rank):
-        print("dump api: ", op_name)
+        # print("dump api: ", op_name)
         self.op_name = op_name
         self.rank = rank
 
@@ -126,13 +131,32 @@ class API:
             return Paddle_Type_Map[element.name]
 
         if isinstance(element, paddle.Tensor):
-            return self._analyze_tensor(element)
+            return self.tensor_analyzer_(element)
 
         if element is None or isinstance(element, (bool, int, float, str, slice)):
             return self._analyze_builtin(element)
 
         msg = f"In op:{self.op_name}, its args type {type(element)} is unsupported at analyze_element"
         print(msg)
+
+    def effi_analyze_tensor(self, arg):
+        single_arg = {}
+        single_arg.update({"type": "paddle.Tensor"})
+        single_arg.update({"dtype": str(arg.dtype.name)})
+        single_arg.update({"shape": arg.shape})
+        with paddle.no_grad():
+            max_ = transfer_types(paddle._C_ops.max(arg).item(), str(arg.dtype.name))
+            min_ = transfer_types(paddle._C_ops.min(arg).item(), str(arg.dtype.name))
+        single_arg.update({"Max": max_})
+        single_arg.update({"Max_origin": max_})
+        single_arg.update({"Min": min_})
+        single_arg.update({"Min_origin": min_})
+        if self.mode == "real_data":
+            api_args = self.op_name + "." + str(self.args_num)
+            pt_path = dump_util.dump_real_data(api_args, arg.detach().cpu(), self.rank)
+            self.args_num += 1
+            single_arg.update({"real_data_path": pt_path})
+        return single_arg
 
     def _analyze_tensor(self, arg):
         single_arg = {}

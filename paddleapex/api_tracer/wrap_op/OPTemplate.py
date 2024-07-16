@@ -16,7 +16,6 @@ import paddle
 from .. import config
 from ..api_info import API
 
-
 class HookOp:
     pass
 

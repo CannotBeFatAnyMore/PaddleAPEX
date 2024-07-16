@@ -13,6 +13,7 @@
 # limitations under the License.
 import json
 import os
+import shutil
 from paddleapex.api_tracer.config import cfg
 from paddleapex.utils import ThreadPool, save_tensor
 
@@ -30,10 +31,15 @@ def write_json(file_path, data, rank=None, mode="forward"):
     else:
         json_pth = os.path.join(file_path, mode + ".json")
     if os.path.exists(json_pth):
-        os.remove(json_pth)
-        print(f"File {json_pth} already exists, tool has overwritten it automatically.")
-    with open(json_pth, mode="a+") as f:
-        json.dump(data, f, indent=2)
+        with open(json_pth, 'r') as file:
+            origin_dump = json.load(file)
+            origin_dump.update(data)
+            new_data = origin_dump
+    else:
+        new_data = data
+    
+    with open(json_pth, mode="w") as f:
+        json.dump(new_data, f, indent=2)
 
 
 class Dump:
@@ -44,7 +50,8 @@ class Dump:
         self.rank = None
         self.dump_api_dict = None
         self.Async_save = Async_save
-
+        if os.path.exists(self.data_route):
+            shutil.remove(self.data_route)
         if self.Async_save:
             self.pool = ThreadPool()
         else:
@@ -85,24 +92,25 @@ class Dump:
             self.dump_api_dict = api_info_dict
         else:
             self.dump_api_dict.update(api_info_dict)
+        self.dump(api_info_dict)
 
-    def dump(self):
+    def dump(self,data):
         if self.rank is not None:
             directory = os.path.join(
                 self.data_route, f"rank{self.rank}_step{cfg.global_step}"
             )
         else:
             directory = self.data_route
-        if self.dump_api_dict is None:
+        if data is None:
             print(
                 "Dump api dict is empty, check if you have correctly inserted marks into scripts"
             )
             print("Especially in pipeline parallel mode!")
         create_directory(directory)
         if self.rank is not None:
-            write_json(directory, self.dump_api_dict, rank=self.rank, mode="forward")
+            write_json(directory, data, rank=self.rank, mode="forward")
         else:
-            write_json(directory, self.dump_api_dict, rank=None, mode="forward")
+            write_json(directory, data, rank=None, mode="forward")
 
 
 dump_util = Dump()

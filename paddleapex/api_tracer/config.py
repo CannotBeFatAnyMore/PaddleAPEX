@@ -33,6 +33,7 @@ class Config:
             self.target_step = configs["target_step"]
             self.remote_path = configs["remote_path"]
             self.Async_dump = configs["Async_dump"]
+            self.profile_mode = configs["profile_mode"]
             f.close()
 
         self.global_step = -1
