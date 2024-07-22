@@ -83,10 +83,11 @@ class API:
             self.op_name: {"args": args_info_list, "kwargs": kwargs_info_dict}
         }
 
-    def update_APIInfo(self, op_name, rank):
+    def update_APIInfo(self, op_name, rank, group=None):
         print("dump api: ", op_name)
         self.op_name = op_name
         self.rank = rank
+        self.group = group
 
     def update_real_data(self, inputs, kwargs):
         self.args = inputs

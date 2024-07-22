@@ -17,31 +17,10 @@ from .. import config
 from ..api_info import API
 from .OPTemplate import OPTemplate
 
-
 class DistHookOp:
     pass
 
-
 cfg = config.cfg
-
-
-def recurse(arg, hook_func):
-    if isinstance(arg, paddle.Tensor):
-        if not arg.stop_gradient:
-            return arg.register_hook(hook_func)
-    elif isinstance(arg, (list, tuple)):
-        out = []
-        for item in arg:
-            out.append(recurse(item, hook_func))
-        return out
-    elif isinstance(arg, dict):
-        out_dict = {}
-        for key, value in arg.items():
-            out_dict[key] = recurse(value, hook_func)
-            return out_dict
-    else:
-        return arg
-
 
 class dist_Template(OPTemplate):
     def forward(self, *args, **kwargs):
@@ -54,8 +33,8 @@ class dist_Template(OPTemplate):
         if cfg.dump_state:
             api_recorder = API(cfg.dump_mode)
             rank = dist.get_rank()
-            api_recorder.update_APIInfo(cfg.prefix_op_name_, rank)
-            print(*args, **kwargs)
+            group = dist.get_group()
+            api_recorder.update_APIInfo(cfg.prefix_op_name_, rank, group)
             getattr(DistHookOp, "wrap_" + str(self.op_name_))(*args, **kwargs)
             api_recorder.update_real_data(args, kwargs)
             # Dist op has no autograd fn. Evoke hook function implicitly.

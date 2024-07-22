@@ -17,7 +17,7 @@ from .. import config
 from ...utils import try_import
 from .get_target_op import GetTargetOP
 from .OPTemplate import OPTemplate, HookOp
-from .dist_OPTemplate import dist_Template
+from .dist_OPTemplate import dist_Template, DistHookOp
 
 cfg = config.cfg
 
@@ -39,7 +39,7 @@ def wrapped_dist_op(op_name):
 def hijack_api():
     op = GetTargetOP(cfg.op_target_pth)
     target_op = op.get_target_ops()
-    # comm_op = op.get_comm_ops()
+    comm_op = op.get_comm_ops()
     for op_name in target_op:
         parent_package, method_name = op_name.rsplit(".", maxsplit=1)
         try:
@@ -57,21 +57,21 @@ def hijack_api():
             parent_package, method_name = attr_name[5:].rsplit(".", maxsplit=1)
             setattr(eval(parent_package), method_name, wrapped_op(attr_name[5:]))
 
-    # for op_name in comm_op:
-    #     parent_package, method_name = op_name.rsplit(".", maxsplit=1)
-    #     try:
-    #         pack = parent_package.split(".")[0]
-    #         package_name, module = try_import(pack)
-    #         globals()[package_name] = module
-    #         setattr(
-    #             DistHookOp,
-    #             "wrap_" + op_name,
-    #             getattr(eval(parent_package), method_name),
-    #         )
-    #     except Exception as err:
-    #         print(op_name, str(err))
+    for op_name in comm_op:
+        parent_package, method_name = op_name.rsplit(".", maxsplit=1)
+        try:
+            pack = parent_package.split(".")[0]
+            package_name, module = try_import(pack)
+            globals()[package_name] = module
+            setattr(
+                DistHookOp,
+                "wrap_" + op_name,
+                getattr(eval(parent_package), method_name),
+            )
+        except Exception as err:
+            print(op_name, str(err))
 
-    # for attr_name in dir(DistHookOp):
-    #     if attr_name.startswith("wrap_"):
-    #         parent_package, method_name = attr_name[5:].rsplit(".", maxsplit=1)
-    #         setattr(eval(parent_package), method_name, wrapped_dist_op(attr_name[5:]))
+    for attr_name in dir(DistHookOp):
+        if attr_name.startswith("wrap_"):
+            parent_package, method_name = attr_name[5:].rsplit(".", maxsplit=1)
+            setattr(eval(parent_package), method_name, wrapped_dist_op(attr_name[5:]))

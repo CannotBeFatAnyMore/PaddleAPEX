@@ -1,44 +1,43 @@
 comm_op:
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.all_gather
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.all_gather_into_tensor
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.all_gather_into_tensor_on_calc_stream
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.all_gather_on_calc_stream
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.all_gather_partial
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.all_gather_partial_on_calc_stream
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.all_reduce
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.all_reduce_on_calc_stream
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.all_to_all
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.all_to_all_on_calc_stream
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.all_to_all_single
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.all_to_all_single_on_calc_stream
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.all_to_all_tensor
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.all_to_all_tensor_on_calc_stream
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.allreduce
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.alltoall
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.alltoall_single
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.broadcast
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.broadcast_on_calc_stream
-  # # -  paddle.base.libpaddle.ProcessGroupNCCL.create
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.gather
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.group_end
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.group_start
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.recv_on_calc_stream
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.recv_partial
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.recv_partial_on_calc_stream
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.reduce
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.reduce_on_calc_stream
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.reduce_scatter
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.reduce_scatter_on_calc_stream
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.reduce_scatter_tensor
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.reduce_scatter_tensor_on_calc_stream
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.scatter
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.scatter_on_calc_stream
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.scatter_tensor
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.scatter_tensor_on_calc_stream
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.send
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.send_on_calc_stream
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.send_partial
-  # -  paddle.base.libpaddle.ProcessGroupNCCL.send_partial_on_calc_stream
+  -  paddle.base.libpaddle.ProcessGroupNCCL.all_gather
+  -  paddle.base.libpaddle.ProcessGroupNCCL.all_gather_into_tensor
+  -  paddle.base.libpaddle.ProcessGroupNCCL.all_gather_into_tensor_on_calc_stream
+  -  paddle.base.libpaddle.ProcessGroupNCCL.all_gather_on_calc_stream
+  -  paddle.base.libpaddle.ProcessGroupNCCL.all_gather_partial
+  -  paddle.base.libpaddle.ProcessGroupNCCL.all_gather_partial_on_calc_stream
+  -  paddle.base.libpaddle.ProcessGroupNCCL.all_reduce
+  -  paddle.base.libpaddle.ProcessGroupNCCL.all_reduce_on_calc_stream
+  -  paddle.base.libpaddle.ProcessGroupNCCL.all_to_all
+  -  paddle.base.libpaddle.ProcessGroupNCCL.all_to_all_on_calc_stream
+  -  paddle.base.libpaddle.ProcessGroupNCCL.all_to_all_single
+  -  paddle.base.libpaddle.ProcessGroupNCCL.all_to_all_single_on_calc_stream
+  -  paddle.base.libpaddle.ProcessGroupNCCL.all_to_all_tensor
+  -  paddle.base.libpaddle.ProcessGroupNCCL.all_to_all_tensor_on_calc_stream
+  -  paddle.base.libpaddle.ProcessGroupNCCL.allreduce
+  -  paddle.base.libpaddle.ProcessGroupNCCL.alltoall
+  -  paddle.base.libpaddle.ProcessGroupNCCL.alltoall_single
+  -  paddle.base.libpaddle.ProcessGroupNCCL.broadcast
+  -  paddle.base.libpaddle.ProcessGroupNCCL.broadcast_on_calc_stream
+  -  paddle.base.libpaddle.ProcessGroupNCCL.gather
+  -  paddle.base.libpaddle.ProcessGroupNCCL.group_end
+  -  paddle.base.libpaddle.ProcessGroupNCCL.group_start
+  -  paddle.base.libpaddle.ProcessGroupNCCL.recv_on_calc_stream
+  -  paddle.base.libpaddle.ProcessGroupNCCL.recv_partial
+  -  paddle.base.libpaddle.ProcessGroupNCCL.recv_partial_on_calc_stream
+  -  paddle.base.libpaddle.ProcessGroupNCCL.reduce
+  -  paddle.base.libpaddle.ProcessGroupNCCL.reduce_on_calc_stream
+  -  paddle.base.libpaddle.ProcessGroupNCCL.reduce_scatter
+  -  paddle.base.libpaddle.ProcessGroupNCCL.reduce_scatter_on_calc_stream
+  -  paddle.base.libpaddle.ProcessGroupNCCL.reduce_scatter_tensor
+  -  paddle.base.libpaddle.ProcessGroupNCCL.reduce_scatter_tensor_on_calc_stream
+  -  paddle.base.libpaddle.ProcessGroupNCCL.scatter
+  -  paddle.base.libpaddle.ProcessGroupNCCL.scatter_on_calc_stream
+  -  paddle.base.libpaddle.ProcessGroupNCCL.scatter_tensor
+  -  paddle.base.libpaddle.ProcessGroupNCCL.scatter_tensor_on_calc_stream
+  -  paddle.base.libpaddle.ProcessGroupNCCL.send
+  -  paddle.base.libpaddle.ProcessGroupNCCL.send_on_calc_stream
+  -  paddle.base.libpaddle.ProcessGroupNCCL.send_partial
+  -  paddle.base.libpaddle.ProcessGroupNCCL.send_partial_on_calc_stream
 
 ignored_op:
 
